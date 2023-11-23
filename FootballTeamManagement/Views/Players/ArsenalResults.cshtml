@@ -1,0 +1,76 @@
+@model FootballTeamManagement.ViewModels.ArsenalResultsViewModel
+
+@{
+    ViewData["Title"] = "Arsenal Results and Fixtures";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+@if (!string.IsNullOrEmpty(Model.Results))
+{
+    var resultsData = Newtonsoft.Json.Linq.JObject.Parse(Model.Results);
+    var matches = resultsData["matches"]?.Children();
+
+    <div id="arsenalResultsContainer">
+        <h3>Results</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Teams</th>
+                    <th>Date</th>
+                    <th>Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var match in matches)
+                {
+                    string homeTeam = match["homeTeam"]?["name"]?.ToString() ?? "N/A";
+                    string awayTeam = match["awayTeam"]?["name"]?.ToString() ?? "N/A";
+                    string matchTeams = homeTeam + " vs " + awayTeam;
+                    string date = DateTime.Parse(match["utcDate"]?.ToString() ?? DateTime.MinValue.ToString()).ToShortDateString();
+                    string homeScore = match["score"]?["fullTime"]?["homeTeam"]?.ToString() ?? "-";
+                    string awayScore = match["score"]?["fullTime"]?["awayTeam"]?.ToString() ?? "-";
+                    string score = homeScore + " - " + awayScore;
+
+                    <tr>
+                        <td>@matchTeams</td>
+                        <td>@date</td>
+                        <td>@score</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(Model.Fixtures))
+{
+    var fixturesData = Newtonsoft.Json.Linq.JObject.Parse(Model.Fixtures);
+    var upcomingMatches = fixturesData["matches"]?.Children();
+
+    <div id="arsenalFixturesContainer">
+        <h3>Upcoming Fixtures</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Teams</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var match in upcomingMatches)
+                {
+                    string homeTeam = match["homeTeam"]?["name"]?.ToString() ?? "N/A";
+                    string awayTeam = match["awayTeam"]?["name"]?.ToString() ?? "N/A";
+                    string matchTeams = homeTeam + " vs " + awayTeam;
+                    string date = DateTime.Parse(match["utcDate"]?.ToString() ?? DateTime.MinValue.ToString()).ToShortDateString();
+
+                    <tr>
+                        <td>@matchTeams</td>
+                        <td>@date</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

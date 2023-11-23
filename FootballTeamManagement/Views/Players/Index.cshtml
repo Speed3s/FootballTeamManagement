@@ -1,0 +1,53 @@
+@model IEnumerable<FootballTeamManagement.Models.Player>
+
+<h2>Players</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<div id="playersTableContainer">
+    <!-- The players table will be dynamically inserted here -->
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            fetch('/api/PlayersApi')
+                .then(response => response.json())
+                .then(data => populateTable(data))
+                .catch(error => console.error('Unable to get players.', error));
+        });
+
+        function populateTable(players) {
+            const container = document.getElementById('playersTableContainer');
+            let table = document.createElement('table');
+            table.className = 'table';
+
+            let thead = table.createTHead();
+            let row = thead.insertRow();
+            let headers = ['Player Name', 'Position', 'Jersey Number', 'Goals Scored', 'Actions'];
+            
+            headers.forEach(headerText => {
+                let header = document.createElement('th');
+                header.textContent = headerText;
+                row.appendChild(header);
+            });
+
+            let tbody = table.createTBody();
+
+            players.forEach(player => {
+                let row = tbody.insertRow();
+                row.insertCell().textContent = player.playerName;
+                row.insertCell().textContent = player.position;
+                row.insertCell().textContent = player.jerseyNumber;
+                row.insertCell().textContent = player.goalsScored;
+                let actionsCell = row.insertCell();
+                actionsCell.innerHTML = `<a href='/Players/Edit/${player.playerId}'>Edit</a> | <a href='/Players/Delete/${player.playerId}'>Delete</a>`;
+            });
+
+            container.innerHTML = '';
+            container.appendChild(table);
+        }
+    </script>
+}
