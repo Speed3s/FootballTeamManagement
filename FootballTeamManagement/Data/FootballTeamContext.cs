@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using FootballTeamManagement.Models; // Replace with your project's namespace
+using FootballTeamManagement.Models;
 
-namespace FootballTeamManagement.Data // Replace with your project's namespace
+namespace FootballTeamManagement.Data 
 {
     public class FootballTeamContext : DbContext
     {
@@ -12,6 +12,5 @@ namespace FootballTeamManagement.Data // Replace with your project's namespace
 
         public DbSet<Player> Players { get; set; }
 
-        // Add other DbSets for other entities
     }
 }

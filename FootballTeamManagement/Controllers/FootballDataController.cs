@@ -18,14 +18,12 @@ public class FootballDataController : ControllerBase
         try
         {
             var results = await _footballDataService.GetArsenalResults();
-            return Ok(results); // You might want to convert the results from JSON to a model
+            return Ok(results); 
         }
         catch (Exception)
         {
-            // Handle exceptions
             return StatusCode(500, "Internal server error");
         }
     }
 
-    // Add another endpoint for the next 5 fixtures
 }

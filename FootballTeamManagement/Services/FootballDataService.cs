@@ -26,7 +26,7 @@ namespace FootballTeamManagement.Services
                 response.EnsureSuccessStatusCode();
 
                 var content = await response.Content.ReadAsStringAsync();
-                return content ?? "";  // Return an empty string if content is null
+                return content ?? "";  
             }
             catch (Exception ex)
             {

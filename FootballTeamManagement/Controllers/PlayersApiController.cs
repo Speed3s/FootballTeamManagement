@@ -14,7 +14,6 @@ public class PlayersApiController : ControllerBase
         _context = context;
     }
 
-    // GET: api/PlayersApi
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Player>>> GetPlayers()
     {
